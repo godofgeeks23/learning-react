@@ -19,11 +19,14 @@ function App() {
     if (includeNumbers) chars += numbers;
     if (includeSymbols) chars += symbols;
     // create a random string of length characters
-    const password = Array.from({ length: length }, () => chars[Math.floor(Math.random() * chars.length)]).join("");
+    const password = Array.from(
+      { length: length },
+      () => chars[Math.floor(Math.random() * chars.length)]
+    ).join("");
 
     setPassword(password);
   });
-    
+
   function copyPassword() {
     passwordRef.current.select();
     document.execCommand("copy");
@@ -52,8 +55,8 @@ function App() {
         type="checkbox"
         checked={includeSymbols}
         onChange={(e) => setIncludeSymbols(e.target.checked)}
-      />
-      {" "}<label>Include Symbols</label>
+      />{" "}
+      <label>Include Symbols</label>
       <br />
       <input
         type="checkbox"
