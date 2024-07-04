@@ -7,7 +7,7 @@ function App() {
 
   return (
     <>
-      <div className="pageContainer" style={{background: color}}>
+      <div className="pageContainer" style={{ background: color }}>
         <h1>Vite+React</h1>
         <h2>Color Changing App</h2>
         <ColorButton color="Red" onClick={() => setColor("red")} />
