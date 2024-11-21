@@ -25,7 +25,7 @@ function App() {
     ).join("");
 
     setPassword(password);
-  });
+  }, [length, includeSymbols, includeNumbers]);
 
   function copyPassword() {
     passwordRef.current.select();

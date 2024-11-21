@@ -1,10 +1,7 @@
-import React from "react"
+import React from "react";
 
-function Main()
-{
-    return (
-        <h1>Main content</h1>
-    )
+function Main() {
+  return <h1>Main content</h1>;
 }
 
 export default Main;
