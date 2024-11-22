@@ -22,7 +22,8 @@ function App() {
           Current Count: {count}
         </button>
         <p>
-          Edit <code>src/App.jsx</code> and save to test HMR (Hot Module Replacement).
+          Edit <code>src/App.jsx</code> and save to test HMR (Hot Module
+          Replacement).
         </p>
       </div>
       <p className="read-the-docs">
