@@ -1,35 +1,91 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react";
+import reactLogo from "./assets/react.svg";
+import viteLogo from "/vite.svg";
+import "./App.css";
+import InputBox from "./components/InputBox";
+import useCurrencyInfo from "./hooks/useCurrencyInfo";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [fromCurrency, setFromCurrency] = useState();
+  const [fromAmount, setFromAmount] = useState(0);
+  const [toCurrency, setToCurrency] = useState();
+  const [toAmount, setToAmount] = useState(0);
+  const [currencyList, setCurrencyList] = useState();
+  const currencyInfo = useCurrencyInfo(fromCurrency);
+
+  const handleFromCurrencyChange = (value) => {
+    setFromCurrency(value);
+  };
+
+  const handleToCurrencyChange = (value) => {
+    setToCurrency(value);
+  };
+
+  const handleFromAmountChange = (value) => {
+    setFromAmount(value);
+    calculate();
+  };
+  const handleToAmountChange = (value) => {
+    setToAmount(value);
+  };
+
+  const swap = () => {
+    setFromCurrency(toCurrency);
+    setToCurrency(fromCurrency);
+  };
+
+  useEffect(() => {
+    fetch(
+      "https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies.json"
+    )
+      .then((res) => res.json())
+      .then((res) => setCurrencyList(Object.keys(res)));
+  }, []);
+
+  const calculate = () => {
+    setToAmount(fromAmount * Number(currencyInfo[fromCurrency][toCurrency]));
+  };
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <h1>Currency Conversion</h1>
+      {currencyList ? (
+        <InputBox
+          label="From"
+          options={currencyList}
+          enabled="true"
+          onCurrencyChange={handleFromCurrencyChange}
+          selectedCurrency={fromCurrency}
+          amount={fromAmount}
+          onAmountChange={handleFromAmountChange}
+        />
+      ) : (
+        <InputBox label="From" options={["Loading"]} enabled="true" />
+      )}
+      <br />
+      <button onClick={swap}>SWAP</button>
+      <br />
+      <br />
+      {currencyList ? (
+        <InputBox
+          label="To"
+          options={currencyList}
+          enabled="false"
+          onCurrencyChange={handleToCurrencyChange}
+          selectedCurrency={toCurrency}
+          amount={toAmount}
+          onAmountChange={handleToAmountChange}
+        />
+      ) : (
+        <InputBox label="To" options={["Loading"]} enabled="false" />
+      )}
+      <br />
+      <br />
+      <button onClick={calculate}>
+        Convert {fromCurrency} to {toCurrency}
+      </button>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
